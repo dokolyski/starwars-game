@@ -1,0 +1,30 @@
+<div class="grid grid-cols-3" *ngIf="getCardsData$ | async as cardsData">
+  <ng-container [ngSwitch]="resourceType">
+    <ng-template [ngSwitchCase]="'starships'">
+      <starwars-game-starship-card
+        [data]="$any(cardsData[0])"
+        [rival]="$any(cardsData[1])"
+      ></starwars-game-starship-card>
+      <ng-template [ngTemplateOutlet]="middleSection"></ng-template>
+      <starwars-game-starship-card
+        [data]="$any(cardsData[1])"
+        [rival]="$any(cardsData[0])"
+      ></starwars-game-starship-card>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'people'">
+      <starwars-game-character-card
+        [data]="$any(cardsData[0])"
+        [rival]="$any(cardsData[1])"
+      ></starwars-game-character-card>
+      <ng-template [ngTemplateOutlet]="middleSection"></ng-template>
+      <starwars-game-character-card
+        [data]="$any(cardsData[1])"
+        [rival]="$any(cardsData[0])"
+      ></starwars-game-character-card>
+    </ng-template>
+  </ng-container>
+</div>
+
+<ng-template #middleSection>
+  <div class="text-center self-center">vs</div>
+</ng-template>
