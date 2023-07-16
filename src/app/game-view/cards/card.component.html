@@ -1,0 +1,13 @@
+<mat-card
+  class="card"
+  [ngClass]="{ card__winner: winner, card__rotate: !data }"
+>
+  <ng-container *ngIf="data">
+    <mat-card-header>
+      <mat-card-title>{{ data.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-content></ng-content>
+    </mat-card-content>
+  </ng-container>
+</mat-card>

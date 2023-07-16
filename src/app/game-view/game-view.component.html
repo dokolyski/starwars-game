@@ -1,30 +1,69 @@
-<div class="grid grid-cols-3" *ngIf="getCardsData$ | async as cardsData">
-  <ng-container [ngSwitch]="resourceType">
-    <ng-template [ngSwitchCase]="'starships'">
-      <starwars-game-starship-card
-        [data]="$any(cardsData[0])"
-        [rival]="$any(cardsData[1])"
-      ></starwars-game-starship-card>
-      <ng-template [ngTemplateOutlet]="middleSection"></ng-template>
-      <starwars-game-starship-card
-        [data]="$any(cardsData[1])"
-        [rival]="$any(cardsData[0])"
-      ></starwars-game-starship-card>
-    </ng-template>
-    <ng-template [ngSwitchCase]="'people'">
-      <starwars-game-character-card
-        [data]="$any(cardsData[0])"
-        [rival]="$any(cardsData[1])"
-      ></starwars-game-character-card>
-      <ng-template [ngTemplateOutlet]="middleSection"></ng-template>
-      <starwars-game-character-card
-        [data]="$any(cardsData[1])"
-        [rival]="$any(cardsData[0])"
-      ></starwars-game-character-card>
-    </ng-template>
-  </ng-container>
+<div class="flex flex-col lg:flex-row">
+  <starwars-game-card [data]="cardsData[0]" [winner]="winner === 0">
+    <ng-template
+      [ngTemplateOutlet]="
+        resourceType === CardResourceTypes.People
+          ? characterProps
+          : starshipProps
+      "
+      [ngTemplateOutletContext]="{ $implicit: cardsData[0] }"
+    ></ng-template>
+  </starwars-game-card>
+  <div class="flex flex-col items-center p-12 min-w-56">
+    <h2>vs</h2>
+    <button
+      (click)="nextTurn()"
+      class="mt-4"
+      [disabled]="!cardsData[1]"
+      mat-raised-button
+    >
+      Next turn
+    </button>
+    <button
+      (click)="finishGame()"
+      class="mt-4"
+      [disabled]="!cardsData[1]"
+      mat-raised-button
+    >
+      Finish game
+    </button>
+  </div>
+  <starwars-game-card [data]="cardsData[1]" [winner]="winner === 1">
+    <ng-template
+      [ngTemplateOutlet]="
+        resourceType === CardResourceTypes.People
+          ? characterProps
+          : starshipProps
+      "
+      [ngTemplateOutletContext]="{ $implicit: cardsData[1] }"
+    ></ng-template>
+  </starwars-game-card>
 </div>
 
-<ng-template #middleSection>
-  <div class="text-center self-center">vs</div>
+<ng-template let-data #characterProps>
+  <mat-list *ngIf="data">
+    <mat-list-item>
+      <span class="font-extrabold"> Mass: {{ data.mass }} </span>
+    </mat-list-item>
+    <mat-list-item> Gender: {{ data.gender }} </mat-list-item>
+    <mat-list-item> Skin Color: {{ data.skin_color }} </mat-list-item>
+    <mat-list-item> Hair Color: {{ data.hair_color }} </mat-list-item>
+    <mat-list-item> Birth Year: {{ data.birth_year }} </mat-list-item>
+    <mat-list-item> Height: {{ data.height }} </mat-list-item>
+  </mat-list>
+</ng-template>
+
+<ng-template let-data #starshipProps>
+  <mat-list *ngIf="data">
+    <mat-list-item>
+      <span class="font-extrabold"> Crew: {{ data.crew }} </span>
+    </mat-list-item>
+    <mat-list-item> MGLT: {{ data.MGLT }} </mat-list-item>
+    <mat-list-item> Cost In Credits: {{ data.cost_in_credits }} </mat-list-item>
+    <mat-list-item>
+      Hyperdrive Rating: {{ data.hyperdrive_rating }}
+    </mat-list-item>
+    <mat-list-item> Starship Class: {{ data.starship_class }} </mat-list-item>
+    <mat-list-item> Cargo Capacity: {{ data.cargo_capacity }} </mat-list-item>
+  </mat-list>
 </ng-template>

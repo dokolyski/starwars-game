@@ -1,6 +1,5 @@
-import { Resource } from './resource.interface';
-
-export interface Starship extends Resource {
+export interface Starship {
+  name: string;
   model: string;
   starship_class: string;
   manufacturer: string;

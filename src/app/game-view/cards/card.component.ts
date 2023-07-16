@@ -1,11 +1,18 @@
-import { Directive, Input } from '@angular/core';
-import { Resource } from '../../../types';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { ResourcesUnionType } from '../../../types';
 
-@Directive({
+@Component({
   selector: 'starwars-game-card',
   standalone: true,
+  imports: [CommonModule, MatCardModule, MatListModule],
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardDirective<T extends Resource> {
-  @Input({ required: true }) data!: T;
-  @Input({ required: true }) rival!: T;
+export class CardComponent {
+  @Input() data?: ResourcesUnionType;
+  @Input() winner?: boolean;
 }

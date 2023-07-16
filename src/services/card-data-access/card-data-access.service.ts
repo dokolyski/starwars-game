@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CardResourceTypes, Resource } from '../../types';
+import { CardResourceTypes, ResourcesUnionType } from '../../types';
 import { getRandomInt } from '../../utils';
-import { firstValueFrom, forkJoin, map, switchMap } from 'rxjs';
+import { firstValueFrom, map, switchMap } from 'rxjs';
 
 @Injectable()
 export class CardDataAccessService {
@@ -10,16 +10,11 @@ export class CardDataAccessService {
   readonly #http = inject(HttpClient);
   readonly #totalRecords: { [key in CardResourceTypes]?: number } = {};
 
-  async getRandomCardPair(resource: CardResourceTypes) {
+  async getRandomCard(resource: CardResourceTypes) {
     this.#totalRecords[resource] ||= await firstValueFrom(
       this.#getResourceNumber(resource)
     );
-    return firstValueFrom(
-      forkJoin([
-        this.#getRandomCardData(resource),
-        this.#getRandomCardData(resource),
-      ])
-    );
+    return firstValueFrom(this.#getRandomCardData(resource));
   }
 
   #getRandomCardData(resource: CardResourceTypes) {
@@ -29,7 +24,9 @@ export class CardDataAccessService {
       getRandomInt(this.#totalRecords[resource]!)
     ).pipe(
       switchMap((itemFullUrl) =>
-        this.#http.get<{ result: { properties: Resource } }>(itemFullUrl)
+        this.#http.get<{ result: { properties: ResourcesUnionType } }>(
+          itemFullUrl
+        )
       ),
       map((response) => response.result.properties)
     );

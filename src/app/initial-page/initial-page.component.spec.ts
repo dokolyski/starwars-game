@@ -1,21 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InitialPageComponent } from './initial-page.component';
+import { createComponentFactory } from '@ngneat/spectator/jest';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 describe('InitialPageComponent', () => {
-  let component: InitialPageComponent;
-  let fixture: ComponentFixture<InitialPageComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [InitialPageComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(InitialPageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  const createComponent = createComponentFactory({
+    component: InitialPageComponent,
+    imports: [InitialPageComponent, RouterTestingModule],
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  const testSetup = () => {
+    return createComponent();
+  };
+
+  describe('on to resource selection button clicked', () => {
+    it('should navigate to resource selection', () => {
+      // Arrange
+      const spectator = testSetup();
+      const navigationSpy = jest.spyOn(spectator.inject(Router), 'navigate');
+
+      // Act
+      spectator.click('[data-cy="to-resource-selection-button"]');
+
+      // Assert
+      expect(navigationSpy).toHaveBeenCalledWith(['/select-resource']);
+    });
   });
 });
