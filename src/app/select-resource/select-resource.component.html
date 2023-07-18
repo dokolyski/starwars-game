@@ -1,6 +1,14 @@
-<button (click)="startGame(CardResourceTypes.Starships)" mat-raised-button>
+<button
+  data-cy="select-starship-resource-button"
+  (click)="startGame(CardResourceTypes.Starships)"
+  mat-raised-button
+>
   Starships
 </button>
-<button (click)="startGame(CardResourceTypes.People)" mat-raised-button>
+<button
+  data-cy="select-character-resource-button"
+  (click)="startGame(CardResourceTypes.People)"
+  mat-raised-button
+>
   People
 </button>

@@ -1,5 +1,9 @@
 <div class="flex flex-col lg:flex-row">
-  <starwars-game-card [data]="cardsData[0]" [winner]="winner === 0">
+  <starwars-game-card
+    data-cy="left-card"
+    [data]="cardsData[0]"
+    [winner]="winner === 0"
+  >
     <ng-template
       [ngTemplateOutlet]="
         resourceType === CardResourceTypes.People
@@ -16,6 +20,7 @@
       class="mt-4"
       [disabled]="!cardsData[1]"
       mat-raised-button
+      data-cy="next-turn-btn"
     >
       Next turn
     </button>
@@ -24,11 +29,16 @@
       class="mt-4"
       [disabled]="!cardsData[1]"
       mat-raised-button
+      data-cy="finish-game-btn"
     >
       Finish game
     </button>
   </div>
-  <starwars-game-card [data]="cardsData[1]" [winner]="winner === 1">
+  <starwars-game-card
+    data-cy="right-card"
+    [data]="cardsData[1]"
+    [winner]="winner === 1"
+  >
     <ng-template
       [ngTemplateOutlet]="
         resourceType === CardResourceTypes.People

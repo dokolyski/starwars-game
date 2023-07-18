@@ -9,6 +9,10 @@
 
 To start the development server run `nx serve starwars-game`. Open your browser and navigate to http://localhost:4200/. Happy coding!
 
+## To run e2e test
+
+To run e2e test run `nx e2e`
+
 
 ## Generate code
 
